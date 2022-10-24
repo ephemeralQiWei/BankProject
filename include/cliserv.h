@@ -2,6 +2,6 @@
 
 void flushIn();
 
-void login_page();
+unsigned int login_page();
 
 unsigned int dispaly_client_operator();

@@ -9,10 +9,27 @@ void flushIn()
         scanf("%c", &ch);
 }
 
-void login_page()
+unsigned int login_page()
 {
-
+    /*
+    int choice;
+    printf("    ---------login_page---------\n");
+    printf("\t1、user login\n");
+    printf("    Please input your choice(1~1):");
+    scanf("%d", &choice);
+    flushIn();
+    //fflush(stdin);   // vain in linux(gcc), useful in vc
+    while (!(choice < 2 && choice > 0)) {
+        printf("    Please re-enter your selection(1~1):");
+        scanf("%d", &choice);
+        flushIn();
+    }
+    return choice;
+    */
+   return 1;
 }
+
+
 
 unsigned int dispaly_client_operator()
 {

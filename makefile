@@ -18,10 +18,10 @@ clientRelyObjs = $(clientRely:%=%.o)
 
 target : client service
 
-client : %(clientRelyObjs)
+client : $(clientRelyObjs)
 	%(cc) %(clientRelyObjs) -o client
 
-%(clientRelyObjs) : %.o : %$(suffix)
+$(clientRelyObjs) : %.o : %$(suffix)
 	$(cc) -c $< -o lib/$@ -Iinclude
 
 
