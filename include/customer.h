@@ -1,5 +1,5 @@
 
-void customer_login();
+struct customer_info customer_login();
 
 
 

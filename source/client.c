@@ -6,15 +6,16 @@
 
 int main(int argc, char* argv[])
 {
-    unsigned int visitor = login_page();
+    unsigned int visitor = login_page(); // register new customer
     switch (visitor) {
         case 1: goto customer; break;
         default: err_sys("not visitor\n");
     }
     
 customer:
-    struct customer_info account = customer_login();
+    struct customer_info ci = customer_login();
     unsigned int business = dispaly_client_operator();
+    /*
     switch (business) {
         case 1: save_money(); break;
         case 2: withdraw_money(); break;
@@ -22,6 +23,7 @@ customer:
         case 4: modify_user_information(); break;
         default: err_sys("not business\n");
     }
+    */
 goto end;
 
 administrator:

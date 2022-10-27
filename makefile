@@ -11,10 +11,11 @@ ifeq ($(cc), g++)
 endif
 
 
-clientRely = client cliserv unp
+clientRely = client cliserv unp customer
+servRely = service cliserv unp server
 
 clientRelyObjs = $(clientRely:%=%.o)
-
+servRelyObjs = $(servRely:%=%.o)
 
 target : client service
 
@@ -24,6 +25,11 @@ client : $(clientRelyObjs)
 $(clientRelyObjs) : %.o : %$(suffix)
 	$(cc) -c $< -o lib/$@ -Iinclude
 
+service : ${servRelyObjs}
+	%(cc) %(clientRelyObjs) -o service
+
+$(servRelyObjs) : %.o : %$(suffix)
+	$(cc) -c $< -o lib/$@ -Iinclude
 
 .PHONY : cleanall cleanobj cleantarget
 cleanall : cleanobj cleantarget

@@ -1,10 +1,10 @@
 
 #define ACCOUNT_LEN 30
 
-struct login_info
+struct customer_info
 {
     char card_no[20];  // length of card number is 19
-    char password[30];
+    char password[20];
 };
 
 struct save_withdraw //sw
@@ -25,9 +25,19 @@ struct transfer_account //ta
     double money;
 };
 
-struct require
+struct request
 {
     unsigned int req_code;
+    union {
+        struct save_withdraw sw;
+        struct user_info_modify uim;
+        struct transfer_account ta;
+    };
+};
+
+struct response
+{
+    unsigned int res_code;
     union {
         struct save_withdraw sw;
         struct user_info_modify uim;
