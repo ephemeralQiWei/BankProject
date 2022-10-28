@@ -2,7 +2,7 @@
 
 int Socket(int family, int type, int protocol)
 {
-    int sockfd = Socket(family, type, protocol);
+    int sockfd = socket(family, type, protocol);
     if (sockfd == -1)
         err_sys("socket function error!\n");
     else
@@ -39,11 +39,11 @@ int Listen(int sockfd, int backlog)
 
 int Accept(int sockfd, struct sockaddr *cliaddr, socklen_t *addrlen)
 {
-    int sockfd = accept(sockfd, cliaddr, addrlen);
-    if (sockfd == -1)
+    int connfd = accept(sockfd, cliaddr, addrlen);
+    if (connfd == -1)
         err_sys("accept function error!\n");
     else
-        return sockfd;
+        return connfd;
 }
 
 int Inet_pton(int family, const char *strptr, void *addrptr)

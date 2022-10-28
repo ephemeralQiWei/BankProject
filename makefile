@@ -11,8 +11,8 @@ ifeq ($(cc), g++)
 endif
 
 
-clientRely = client cliserv unp customer
-servRely = service cliserv unp server
+clientRely = client cliserv unp customer warpsock
+servRely = service cliserv unp server warpsock
 
 clientRelyObjs = $(clientRely:%=%.o)
 servRelyObjs = $(servRely:%=%.o)
@@ -20,16 +20,16 @@ servRelyObjs = $(servRely:%=%.o)
 target : client service
 
 client : $(clientRelyObjs)
-	%(cc) %(clientRelyObjs) -o client
+	$(cc) $^ -o client
 
 $(clientRelyObjs) : %.o : %$(suffix)
-	$(cc) -c $< -o lib/$@ -Iinclude
+	$(cc) -g -c $< -o lib/$@ -Iinclude
 
 service : ${servRelyObjs}
-	%(cc) %(clientRelyObjs) -o service
+	$(cc) $^ -o service
 
 $(servRelyObjs) : %.o : %$(suffix)
-	$(cc) -c $< -o lib/$@ -Iinclude
+	$(cc) -g -c $< -o lib/$@ -Iinclude
 
 .PHONY : cleanall cleanobj cleantarget
 cleanall : cleanobj cleantarget

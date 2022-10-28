@@ -12,9 +12,11 @@ int main(int argc, char* argv[])
         default: err_sys("not visitor\n");
     }
     
+    struct customer_info ci;
+    unsigned int business;
 customer:
-    struct customer_info ci = customer_login();
-    unsigned int business = dispaly_client_operator();
+    ci = customer_login();
+    business = dispaly_client_operator();
     /*
     switch (business) {
         case 1: save_money(); break;
@@ -30,6 +32,7 @@ administrator:
 goto end;
 
 end:
+    ;
 
 }
 

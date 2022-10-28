@@ -1,3 +1,4 @@
+#pragma once
 
 #define ACCOUNT_LEN 30
 

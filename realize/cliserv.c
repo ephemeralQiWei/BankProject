@@ -33,7 +33,7 @@ unsigned int login_page()
 
 unsigned int dispaly_client_operator()
 {
-    int choice;
+    unsigned int choice;
     printf("    ---------pick your business---------\n");
     printf("\t1、save money\n");
     printf("\t2、withdraw money\n");
