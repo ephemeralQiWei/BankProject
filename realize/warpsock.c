@@ -51,7 +51,7 @@ int Inet_pton(int family, const char *strptr, void *addrptr)
     int res = inet_pton(family, strptr, addrptr);
     if (res == 0) {
         err_sys("presentation of addr is valid!\n");
-    } else if (res = -1) {
+    } else if (res == -1) {
         err_sys("inet_pton function error!\n");
     } else {
         return res;

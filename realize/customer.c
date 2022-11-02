@@ -12,33 +12,23 @@ struct customer_info customer_login()
     printf("in customer_login function\n");
     // If the customer enters the bank card number and password, connect to the server synchronously
     struct customer_info ci;
-    int BCIDconfirm = 0;
+    int CIconfirm = 0;
     //char BankCardID[20];
-    while (BCIDconfirm != 1) {
+    while (CIconfirm != 1) {
         printf("Please input your BankCardID:");
-        fgets(ci.card_no, 20, stdin);
-        printf("Please confirm your input for BankCardID (1:confirm; else:re-enter):");
-        scanf("%d", &BCIDconfirm);
-        flushIn();
-    }
-    int passwdconfirm = 0;
-    //char Password[20];
-    while (passwdconfirm != 1) {
+        // fgets(ci.card_no, 20, stdin);
+        gets(ci.card_no);
         printf("Please input your Password:");
-        fgets(ci.password, 20, stdin);
-        printf("Please confirm your input for Password (1:confirm; else:re-enter):");
-        scanf("%d", &passwdconfirm);
+        // fgets(ci.password, 20, stdin);
+        gets_s(ci.password, sizeof(ci.password));
+        printf("Please confirm your input for BankCardID and password (1:confirm; else:re-enter):");
+        scanf("%d", &CIconfirm);
         flushIn();
     }
-    ci.card_no[strlen(ci.card_no)-1] = '\0';
-    ci.password[strlen(ci.password)-1] = 0;
+
     puts(ci.card_no);
     puts(ci.password);
     printf("ci.card_no len = %d, ci.password len = %d\n", (int)strlen(ci.card_no), (int)strlen(ci.password));
-    printf("%d, %d\n", ci.card_no[5], ci.password[4]);
-    printf("%d, %d\n", ci.card_no[6], ci.password[5]);
-    printf("%d, %d\n", ci.card_no[7], ci.password[6]);
-    printf("%d, %d\n", ci.card_no[8], ci.password[7]);
     
     //** connect to server to verify identity
     printf("will connect service\n");
@@ -57,7 +47,7 @@ struct customer_info customer_login()
     struct response res;
     read(sockfd, &res, sizeof(res));
 
-    printf("code of response is %d\n", res.res_code);
+    printf("code of response returned from the server is %d\n", res.res_code);
 
     // dispose
     return ci;

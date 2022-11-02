@@ -7,6 +7,10 @@ void flushIn()
     char ch;
     while (ch != '\n')
         scanf("%c", &ch);
+    /*
+    while (getchar() != '\n')
+        scanf("%c", &ch);
+    */
 }
 
 unsigned int login_page()
