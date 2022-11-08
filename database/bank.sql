@@ -6,7 +6,7 @@ CREATE TABLE customer (
     IDNo        VARCHAR(18) primary key               comment '身份证号码',
 	name        VARCHAR(20) not null                  comment '姓名',
     gender      TINYINT     not null DEFAULT 1        comment '性别', 
-    nation      VARCHAR(10) not null DEFAULT '中国-汉'   comment '国家民族',
+    nation      VARCHAR(20) not null DEFAULT '中国-汉族' comment '国家民族',
     birthday    DATE        not null                  comment '出生日期',
 	address     VARCHAR(30) not null                  comment '常住户口所在地住址'
 ) comment '用户信息表' ;

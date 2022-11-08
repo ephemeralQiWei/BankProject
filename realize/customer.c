@@ -1,8 +1,9 @@
+#include "unp.h"
 #include "customer.h"
 #include "warpsock.h"
 #include "structs.h"
 #include "cliserv.h"
-#include "unp.h"
+#include <stdio.h>
 
 #define SERV_PORT 8888
 #define SERV_ADDR "127.0.0.1"
@@ -16,15 +17,15 @@ struct customer_info customer_login()
     //char BankCardID[20];
     while (CIconfirm != 1) {
         printf("Please input your BankCardID:");
-        // fgets(ci.card_no, 20, stdin);
-        gets(ci.card_no);
+        fgets(ci.card_no, sizeof(ci.card_no), stdin);
         printf("Please input your Password:");
-        // fgets(ci.password, 20, stdin);
-        gets_s(ci.password, sizeof(ci.password));
+        fgets(ci.password, sizeof(ci.password), stdin);
         printf("Please confirm your input for BankCardID and password (1:confirm; else:re-enter):");
         scanf("%d", &CIconfirm);
         flushIn();
     }
+    ci.card_no[strlen(ci.card_no)-1] = '\0';
+    ci.password[strlen(ci.password)-1] = '\0';
 
     puts(ci.card_no);
     puts(ci.password);
@@ -48,7 +49,7 @@ struct customer_info customer_login()
     read(sockfd, &res, sizeof(res));
 
     printf("code of response returned from the server is %d\n", res.res_code);
-
+    printf(res.res_code == 1 ? "login successful\n" : "login failed\n");
     // dispose
     return ci;
 }
