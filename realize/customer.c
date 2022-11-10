@@ -26,7 +26,7 @@ login:
         scanf("%d", &CIconfirm);
         if (CIconfirm != 1 && CIconfirm != 0)
             exit(-1);
-        flushIn();
+        clear_in(stdin);
     }
     ci->card_no[strlen(ci->card_no)-1] = '\0';
     ci->password[strlen(ci->password)-1] = '\0';
@@ -43,16 +43,16 @@ login:
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_port = htons(SERV_PORT);
-    inet_pton(AF_INET, SERV_ADDR, &servaddr.sin_addr);
+    Inet_pton(AF_INET, SERV_ADDR, &servaddr.sin_addr);
 
-    connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr));
+    Connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr));
 
-    write(sockfd, &ci, sizeof(ci));
+    write(sockfd, ci, sizeof(*ci));
 
     struct response res;
     read(sockfd, &res, sizeof(res));
 
-    printf("code of response returned from the server is %d\n", res.res_code);
+    printf("code of response returned from the server is %u\n", res.res_code);
     printf(res.res_code == 1 ? "login successful\n" : "login failed\n");
     if (res.res_code != 1)
         goto login;

@@ -28,8 +28,9 @@ struct transfer_account //ta
 
 struct request
 {
-    unsigned int req_code;
+    unsigned int req_code;  // 0:over  1:login in  2:
     union {
+        struct customer_info ci;
         struct save_withdraw sw;
         struct user_info_modify uim;
         struct transfer_account ta;
@@ -41,7 +42,7 @@ struct name_balance
 {
     char name[30];
     double balance;
-}
+};
 
 struct response
 {
