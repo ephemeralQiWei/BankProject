@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "stdio.h": "c",
+        "unp.h": "c",
+        "typeinfo": "cpp"
+    }
+}

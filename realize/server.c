@@ -6,8 +6,8 @@
 void service(int sockfd)
 {
     MYSQL mysql;
-    MYSQL_RES* res;
-    MYSQL_ROW row;
+    //MYSQL_RES* res;
+    MYSQL_ROW rows[3];
 
     mysql_init(&mysql);
 
@@ -19,7 +19,8 @@ void service(int sockfd)
         exit(-1);
     }
 
-    struct customer_info ci = checkLogin(sockfd, &mysql);
+    struct customer_info ci = checkLogin(sockfd, &mysql, rows);
+
     /*
     for ( ; ; ) {
         struct request req;
@@ -29,25 +30,24 @@ void service(int sockfd)
         write(sockfd, &res, sizeof(res));
     }
     */
+
+    //mysql_free_result(res);
+    mysql_close(&mysql);
 }
 
-struct customer_info checkLogin(int sockfd, MYSQL* mysql)
+struct customer_info checkLogin(int sockfd, MYSQL* mysql, MYSQL_ROW* rows)
 {
     MYSQL_RES* sqlres;
-    MYSQL_ROW row;
+    struct response res;
     struct customer_info ci;
+
 checkLogin: 
-    
-    read(sockfd, &ci, sizeof(ci));
+    read(sockfd, ci, sizeof(struct customer_info));
     puts(ci.card_no);
     puts(ci.password);
     printf("ci.card_no len = %d, ci.password len = %d\n", (int)strlen(ci.card_no), (int)strlen(ci.password));
-    // printf("%d, %d\n", ci.card_no[5], ci.password[4]);
-    // printf("%d, %d\n", ci.card_no[6], ci.password[5]);
-    // printf("%d, %d\n", ci.card_no[7], ci.password[6]);
-    // printf("%d, %d\n", ci.card_no[8], ci.password[7]);
-    // verify customer information
-    char sql[100] = "select IDNo, business from account where accountNo = ";
+
+    char sql[100] = "select * from account where accountNo = ";
     strcat(sql, ci.card_no);
     char temp[32] = " and password = ";
     strcat(sql, " and password = ");
@@ -58,25 +58,35 @@ checkLogin:
 
     // query data base
     if (ret != 1) {  // strcmp
-        struct response res;
         printf("login fail\n");
         res.res_code = 1;  // login fail
         write(sockfd, &res, sizeof(res));
         goto checkLogin;
     } else {
-        struct response res;
         printf("login success\n");
         res.res_code = 0; // login success
 
         
         sqlres = mysql_store_result(&mysql);
-        row = mysql_fetch_row(sqlres);
+        rows[0] = mysql_fetch_row(sqlres);
         char sql1[100] = "select * from customer where IDNo = ";
-        strcat(sql, row[0]);
+        strcat(sql1, row[0]);
         mysql_query(mysql, sql1);
+        sqlres = mysql_store_result(&mysql);
+        rows[1] = mysql_fetch_row(sqlres);
+
+        char sql2[100] = "select * from curdep where accountNo = ";
+        strcat(sql2, ci.card_no);
+        mysql_query(mysql, sql2);
+        sqlres = mysql_store_result(&mysql);
+        rows[2] = mysql_fetch_row(sqlres);
+
+        memcpy(res.nb.name, rows[1][1], strlen(rows[1][1])+1);
+        res.nb.balance = strtod(rows[2][1]);
+
         write(sockfd, &res, sizeof(res));
     }
     
-
+    mysql_free_result(sqlres);
     return ci;
 }

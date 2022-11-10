@@ -4,4 +4,4 @@
 
 void service(int connfd);
 
-struct customer_info checkLogin(int connfd, MYSQL* mysql);
+struct customer_info checkLogin(int sockfd, MYSQL* mysql, MYSQL_ROW* rows);

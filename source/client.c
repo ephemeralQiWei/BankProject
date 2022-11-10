@@ -14,18 +14,25 @@ int main(int argc, char* argv[])
     
     struct customer_info ci;
     unsigned int business;
+    struct response res;
+    struct name_balance nb;
+
+    int socket;
+
 customer:
-    ci = customer_login();
-    business = dispaly_client_operator();
-    /*
-    switch (business) {
-        case 1: save_money(); break;
-        case 2: withdraw_money(); break;
-        case 3: transfer_account(); break;
-        case 4: modify_user_information(); break;
-        default: err_sys("not business\n");
+    socket = customer_login(&ci, &nb);
+    printf("您好, %s！\n您的账户余额: %d元\n", nb.name, nb.balance);
+    bool over = false;
+    while (over) {
+        business = dispaly_client_operator();
+        switch (business) {
+            case 1: save_money(); break;
+            case 2: withdraw_money(); break;
+            case 3: transfer_account(); break;
+            case 4: modify_user_information(); break;
+            default: err_sys("not business\n");
+        }
     }
-    */
 goto end;
 
 administrator:

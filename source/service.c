@@ -29,6 +29,7 @@ int main(int argc, char* argv[])
         clilen = sizeof(cliaddr);
         int connfd = Accept(listenfd, (struct sockaddr *) &cliaddr, &clilen);
         if ( (childpid = fork()) == 0) {
+            printf("child process start\n");
             close(listenfd);
             service(connfd);
             printf("child process end\n");

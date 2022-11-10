@@ -36,11 +36,18 @@ struct request
     };
 };
 
+
+struct name_balance
+{
+    char name[30];
+    double balance;
+}
+
 struct response
 {
     unsigned int res_code;
     union {
-        struct save_withdraw sw;
+        struct name_balance nb;
         struct user_info_modify uim;
         struct transfer_account ta;
     };
