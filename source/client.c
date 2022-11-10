@@ -17,12 +17,12 @@ int main(int argc, char* argv[])
     struct response res;
     struct name_balance nb;
 
-    int socket;
+    int sockfd;
 
 customer:
-    socket = customer_login(&ci, &nb);
-    printf("您好, %s！\n您的账户余额: %d元\n", nb.name, nb.balance);
-    bool over = false;
+    sockfd = customer_login(&ci, &nb);
+    printf("您好, %s！\n您的账户余额: %f元\n", nb.name, nb.balance);
+    _Bool over = 0;
     while (over) {
         business = dispaly_client_operator();
         switch (business) {

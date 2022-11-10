@@ -1,7 +1,5 @@
 #pragma once
 
-void flushIn();
+#include <stdio.h>
 
-unsigned int login_page();
-
-unsigned int dispaly_client_operator();
+void clear_in(FILE* file);

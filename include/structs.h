@@ -45,7 +45,7 @@ struct name_balance
 
 struct response
 {
-    unsigned int res_code;
+    unsigned int res_code;  // 0:login failed  1:login succeeded
     union {
         struct name_balance nb;
         struct user_info_modify uim;
