@@ -1,0 +1,9 @@
+
+*.o
+
+client
+service
+
+makefile1
+
+/.vscode

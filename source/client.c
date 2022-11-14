@@ -23,7 +23,7 @@ customer:
     sockfd = customer_login(&ci, &nb);
     printf("您好, %s！\n您的账户余额: %f元\n", nb.name, nb.balance);
     _Bool over = 0;
-    while (over) {
+    while (!over) {
         business = dispaly_client_operator();
         switch (business) {
             case 1: save_money(); break;

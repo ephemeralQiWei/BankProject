@@ -12,8 +12,10 @@ int customer_login(struct customer_info *ci, struct name_balance *nb)
 {
     printf("in customer_login function\n");
     // If the customer enters the bank card number and password, connect to the server synchronously
-    
+    int sockfd = -1;
     int CIconfirm;
+    struct request req;
+
     //char BankCardID[20];
 login:
     CIconfirm = 0;
@@ -37,7 +39,10 @@ login:
     
     //** connect to server to verify identity
     printf("will connect service\n");
-    int sockfd = Socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+    if (sockfd != -1)
+        goto send;
+    sockfd = Socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
     struct sockaddr_in servaddr;
     bzero(&servaddr, sizeof(servaddr));
@@ -47,7 +52,11 @@ login:
 
     Connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr));
 
-    write(sockfd, ci, sizeof(*ci));
+
+send:
+    req.req_code = 1;
+    req.ci = *ci;
+    write(sockfd, &req, sizeof(struct request));
 
     struct response res;
     read(sockfd, &res, sizeof(res));

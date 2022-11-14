@@ -39,21 +39,20 @@ struct customer_info checkLogin(int sockfd, MYSQL* mysql, MYSQL_ROW* rows)
 {
     MYSQL_RES* sqlres;
     struct response res;
-    struct customer_info ci;
-    sqlres = NULL;
-    printf("%p\n", sqlres);
+    struct request req;
 
 checkLogin: 
-    read(sockfd, &ci, sizeof(struct customer_info));
-    puts(ci.card_no);
-    puts(ci.password);
-    printf("ci.card_no len = %d, ci.password len = %d\n", (int)strlen(ci.card_no), (int)strlen(ci.password));
+    read(sockfd, &req, sizeof(req));
+    printf("request code = %u\n", req.req_code);
+    puts(req.ci.card_no);
+    puts(req.ci.password);
+    printf("ci.card_no len = %d, ci.password len = %d\n", (int)strlen(req.ci.card_no), (int)strlen(req.ci.password));
 
     char sql[100] = "select * from account where accountNo = '";
-    strcat(sql, ci.card_no);
+    strcat(sql, req.ci.card_no);
     char temp[32] = "' and password = '";
     strcat(sql, "' and password = '");
-    strcat(sql, ci.password);
+    strcat(sql, req.ci.password);
     strcat(sql, "'");
     puts(sql);
     int ret = mysql_query(mysql, sql);
@@ -73,19 +72,16 @@ checkLogin:
         printf("login fail\n");
         res.res_code = 0;  // login fail
         write(sockfd, &res, sizeof(res));
-        //goto checkLogin;
+        goto checkLogin;
     } else {
         printf("login success\n");
         res.res_code = 1; // login success
 
-        
-        
-        printf("line 72\n");
+                
         printf("%p\n", sqlres);
         rows[0] = mysql_fetch_row(sqlres);
         printf("%p\n", rows[0]);
         printf("%s %s %s %s\n", rows[0][0], rows[0][1], rows[0][2], rows[0][3]);
-        printf("line 73\n");
         char sql1[100] = "select * from customer where IDNo = '";
         strcat(sql1, rows[0][1]);
         strcat(sql1, "'");
@@ -95,7 +91,7 @@ checkLogin:
         rows[1] = mysql_fetch_row(sqlres);
 
         char sql2[100] = "select * from curdep where accountNo = '";
-        strcat(sql2, ci.card_no);
+        strcat(sql2, req.ci.card_no);
         strcat(sql2, "'");
         puts(sql2);
         mysql_query(mysql, sql2);
@@ -111,5 +107,5 @@ checkLogin:
     }
     
     mysql_free_result(sqlres);
-    return ci;
+    return req.ci;
 }
